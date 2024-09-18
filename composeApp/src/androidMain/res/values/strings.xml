@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TQMultiplatformProject</string>
+    <string name="performance_dashboard">Performance dashboard</string>
 </resources>

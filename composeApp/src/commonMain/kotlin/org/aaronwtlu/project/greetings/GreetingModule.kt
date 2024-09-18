@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.schedule.android.GreetingTheme
+import org.aaronwtlu.project.greetings.GreetingTheme
 
 @Composable
 fun GreetingModule(modifier: Modifier) {

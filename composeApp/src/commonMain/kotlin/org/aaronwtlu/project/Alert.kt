@@ -1,4 +1,4 @@
-package com.example.schedule.android
+package org.aaronwtlu.project
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button

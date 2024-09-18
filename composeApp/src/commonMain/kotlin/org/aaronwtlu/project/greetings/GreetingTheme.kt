@@ -1,4 +1,4 @@
-package com.example.schedule.android
+package org.aaronwtlu.project.greetings
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

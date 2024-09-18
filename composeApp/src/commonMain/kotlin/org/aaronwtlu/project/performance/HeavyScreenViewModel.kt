@@ -18,7 +18,6 @@ package org.aaronwtlu.project.performance
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.tracing.trace
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.minutes
 import kotlinx.coroutines.delay
@@ -29,6 +28,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.aaronwtlu.project.NetworkServiceIMP
 
 class HeavyScreenViewModel : ViewModel() {
     private var _items = MutableStateFlow(emptyList<HeavyItem>())
@@ -54,7 +54,7 @@ data class HeavyItem(
 /**
  * Simple method formatting an [Instant] to a local time with time zone.
  */
-fun Instant.format(timeZone: TimeZone): String = trace("PublishDate.format") {
+fun Instant.format(timeZone: TimeZone): String {
     val dt = toLocalDateTime(timeZone)
 
     val day = dt.dayOfMonth.toString().padStart(2, '0')
@@ -63,7 +63,7 @@ fun Instant.format(timeZone: TimeZone): String = trace("PublishDate.format") {
     val hh = dt.hour.toString().padStart(2, '0')
     val mm = dt.minute.toString().padStart(2, '0')
 
-    "$day.$month.$year - $hh:$mm\n$timeZone"
+    return "$day.$month.$year - $hh:$mm\n$timeZone"
 }
 
 private fun generateItems(howMany: Int) = List(howMany) { index ->

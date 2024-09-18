@@ -7,6 +7,13 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    kotlin("plugin.serialization")
+    id("kotlin-parcelize")
+//    id("com.google.devtools.ksp")
+//    alias(libs.plugins.com.android.application)
+//    alias(libs.plugins.org.jetbrains.kotlin.android)
+//    alias(libs.plugins.androidx.baselineprofile)
+//    alias(libs.plugins.compose)
 }
 
 kotlin {
@@ -22,7 +29,7 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+//        iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
@@ -31,12 +38,18 @@ kotlin {
     }
     
     sourceSets {
-        val desktopMain by getting
+//        val desktopMain by getting
         
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.core.ktx)
+            implementation(libs.coil.compose)
+
+            implementation("io.insert-koin:koin-core:3.5.0")
+            implementation("io.insert-koin:koin-android:3.5.0")
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -47,11 +60,34 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.tracing.ktx)
+            /// https://github.com/Kotlin/kotlinx-datetime?tab=readme-ov-file#using-in-your-projects
+//            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.core.ktx)
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+            /// Koin
+            implementation("io.insert-koin:koin-core:3.5.0")
         }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
+
+        iosMain.dependencies {
+//            implementation("io.ktor:ktor-client-ios:2.0.0")
+//            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt") {
+//                version {
+//                    strictly("1.5.1-native-mt")
+//                }
+//            }
+//            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt") {
+//                version {
+//                    strictly("1.5.1-native-mt")
+//                }
+//            }
         }
+//        desktopMain.dependencies {
+//            implementation(compose.desktop.currentOs)
+//            implementation(libs.kotlinx.coroutines.swing)
+//        }
     }
 }
 
@@ -93,6 +129,7 @@ android {
 }
 dependencies {
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.benchmark.baseline.profile.gradle.plugin)
 }
 
 compose.desktop {
