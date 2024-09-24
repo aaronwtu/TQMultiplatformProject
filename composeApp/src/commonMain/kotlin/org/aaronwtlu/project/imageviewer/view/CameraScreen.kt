@@ -38,7 +38,11 @@ fun CameraScreen(onBack: (resetSelectedPicture: Boolean) -> Unit) {
                     onBack(false)
                 }
             },
-            alignRightContent = {},
+            alignRightContent = {
+                BackButton {
+                    onBack(false)
+                }
+            },
         )
     }
 }

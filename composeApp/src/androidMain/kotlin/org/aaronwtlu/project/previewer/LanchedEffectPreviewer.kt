@@ -21,7 +21,7 @@ fun LaunchedEffectPreviewer() {
     var count by remember { mutableIntStateOf(0) }
 
     // 当 count 的值发生变化时，重新执行副作用
-    LaunchedEffect(count) {
+    LaunchedEffect(Unit) {
         delay(1000L)
         Klog.i("LaunchedEffect is running")
         // TODO: 1、为什么会执行2次？，2、isActive的作用以及while用法怎么理解

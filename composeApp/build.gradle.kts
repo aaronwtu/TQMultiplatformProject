@@ -56,6 +56,9 @@ kotlin {
             implementation("com.google.android.gms:play-services-maps:18.2.0")
             implementation("com.google.android.gms:play-services-location:21.1.0")
             implementation("com.google.maps.android:maps-compose:2.11.2")
+            /// life cycle, 低版本会导致一个crash
+            /// java.lang.IllegalStateException: CompositionLocal LocalLifecycleOwner not present
+            implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
         }
 
         commonMain.dependencies {

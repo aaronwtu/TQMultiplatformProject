@@ -7,13 +7,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.aaronwtlu.project.Coroutine.CoroutinePreview
 import org.aaronwtlu.project.imageviewer.ExternalImageViewerEvent
 import org.aaronwtlu.project.imageviewer.ImageViewerAndroid
+import org.aaronwtlu.project.lifecycle.AppLifecycle
+import org.aaronwtlu.project.lifecycle.AppLifecycleObserver
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.core.context.startKoin
@@ -44,9 +51,14 @@ class MainActivity : ComponentActivity() {
             Log.i("Info", networkService.name())
         }
         setContent {
-//            CoroutinePreview()
-            ImageViewerAndroid(externalEvents)
-//            App()
+            AppLifecycle(
+                content = {
+                    ImageViewerAndroid(externalEvents)
+                },
+                eventHandler = {
+                    Klog.d("Did received event: $it")
+                }
+            )
         }
         Log.i("Info","==============> end")
     }
