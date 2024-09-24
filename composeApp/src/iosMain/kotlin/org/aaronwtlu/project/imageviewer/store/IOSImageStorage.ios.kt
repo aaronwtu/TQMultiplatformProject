@@ -81,7 +81,7 @@ class IOSImageStorage (
         }
     }
 
-    override fun delete(picture: PictureData.Camera) {
+    override suspend fun delete(picture: PictureData.Camera) {
         ioScope.launch {
             picture.jpgFile.delete()
             picture.thumbnailJpgFile.delete()

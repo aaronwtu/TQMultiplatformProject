@@ -1,11 +1,14 @@
 package org.aaronwtlu.project.imageviewer.view
 
 import androidx.compose.runtime.mutableStateListOf
+import org.aaronwtlu.project.Klog
+import org.koin.core.logger.Level
 
 // TODO: vararg 是什么意思？
 class NavigationStack<T>(vararg initial: T) {
     val stack = mutableStateListOf(*initial)
     fun push(t: T) {
+        Klog.i("navi stack push $t")
         stack.add(t)
     }
 

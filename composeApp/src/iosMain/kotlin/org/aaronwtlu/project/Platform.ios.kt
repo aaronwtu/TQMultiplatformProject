@@ -6,9 +6,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.aaronwtlu.project.imageviewer.icon.IconIosShare
+import org.koin.core.logger.Level
+import org.koin.core.logger.Logger
+import org.koin.core.logger.MESSAGE
 import platform.CoreFoundation.CFUUIDCreate
 import platform.CoreFoundation.CFUUIDCreateString
 import platform.Foundation.CFBridgingRelease
+import platform.Foundation.NSLog
 import platform.UIKit.UIDevice
 import platform.Foundation.NSUUID
 import platform.UIKit.UIImage
@@ -37,3 +41,9 @@ actual fun createUUID(): String = NSUUID().toString()
 
 actual val isShareFeatureSupported: Boolean = true
 actual val shareIcon: ImageVector = IconIosShare
+
+actual fun getLogger(): Logger = object : Logger(Level.DEBUG) {
+    override fun display(level: Level, msg: MESSAGE) {
+        NSLog("klog: $msg")
+    }
+}

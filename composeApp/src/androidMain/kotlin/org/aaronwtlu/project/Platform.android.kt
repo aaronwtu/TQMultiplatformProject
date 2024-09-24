@@ -1,6 +1,7 @@
 package org.aaronwtlu.project
 
 import android.os.Build
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.ui.graphics.ImageBitmap
@@ -8,6 +9,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.Dispatcher
+import org.koin.core.logger.Level
+import org.koin.core.logger.Logger
+import org.koin.core.logger.MESSAGE
 import java.util.UUID
 
 class AndroidPlatform : Platform {
@@ -29,3 +33,15 @@ actual typealias PlatformStorableImage = AndroidStorableImage
 
 actual val isShareFeatureSupported: Boolean = true
 actual val shareIcon: ImageVector = Icons.Filled.Share
+
+actual fun getLogger(): Logger = object : Logger(Level.DEBUG) {
+    override fun display(level: Level, msg: MESSAGE) {
+        val tag = "klog"
+        when (level) {
+            Level.DEBUG -> Log.d(tag, msg)
+            Level.INFO -> Log.i(tag, msg)
+            Level.ERROR -> Log.e(tag, msg)
+            else -> Log.v(tag, msg)
+        }
+    }
+}

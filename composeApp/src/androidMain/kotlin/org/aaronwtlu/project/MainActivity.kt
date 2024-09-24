@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.i("Info","==============> start")
         startKoin {
+            logger(getLogger())
             androidContext(this@MainActivity)
             modules(appModule())
             print(networkService.name())

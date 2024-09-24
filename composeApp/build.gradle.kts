@@ -48,6 +48,12 @@ kotlin {
 
             implementation("io.insert-koin:koin-core:3.5.0")
             implementation("io.insert-koin:koin-android:3.5.0")
+            implementation("androidx.camera:camera-camera2:1.3.1")
+            implementation("androidx.camera:camera-lifecycle:1.3.1")
+            implementation("androidx.camera:camera-view:1.3.1")
+            implementation("com.google.accompanist:accompanist-permissions:0.29.2-rc")
+            implementation("com.google.android.gms:play-services-maps:18.2.0")
+            implementation("com.google.android.gms:play-services-location:21.1.0")
         }
 
         commonMain.dependencies {
@@ -69,6 +75,12 @@ kotlin {
 
             /// Koin
             implementation("io.insert-koin:koin-core:3.5.0")
+            /// Log
+//            implementation("io.github.microutils:kotlin-logging:2.0.11")
+//            implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
+            // https://mvnrepository.com/artifact/io.ktor/ktor-client-logging
+//            implementation("io.ktor:ktor-client-logging:jar:2.3.12")
+
         }
 
         iosMain.dependencies {
@@ -130,6 +142,7 @@ android {
 dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.benchmark.baseline.profile.gradle.plugin)
+    implementation(libs.androidx.camera.core)
 }
 
 compose.desktop {

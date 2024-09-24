@@ -9,5 +9,4 @@ import org.aaronwtlu.project.imageviewer.model.PictureData
 expect fun CameraView(
     modifier: Modifier,
     onCapture: (picture: PictureData.Camera, image: PlatformStorableImage) -> Unit
-
 )

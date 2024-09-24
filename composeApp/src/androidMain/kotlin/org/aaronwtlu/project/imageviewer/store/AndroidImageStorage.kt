@@ -3,6 +3,8 @@ package org.aaronwtlu.project.imageviewer.store
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.PlatformStorableImage
 import org.aaronwtlu.project.imageviewer.ImageStorage
 import org.aaronwtlu.project.imageviewer.model.PictureData
@@ -22,10 +25,20 @@ import org.aaronwtlu.project.imageviewer.toImageBitmap
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import tqmultiplatformproject.composeapp.generated.resources.Res
 import java.io.File
+import java.nio.file.Files
 
 private const val maxStorableImageSizePx = 2000
 private const val storableThumbnailSizePx = 200
 private const val jpegCompressionQuality = 60
+
+class CustomException(message: String) : Exception(message)
+
+fun validateName(name: String) {
+    if (name.isBlank()) {
+        throw CustomException("Name cannot be blank")
+    }
+    println("Valid name: $name")
+}
 
 class AndroidImageStorage(
     private val pictures: SnapshotStateList<PictureData>,
@@ -61,11 +74,14 @@ class AndroidImageStorage(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun saveImage(picture: PictureData.Camera, image: PlatformStorableImage) {
         if (image.imageBitmap.width == 0 || image.imageBitmap.height == 0) {
             return
         }
-        ioScope.launch {
+
+        Klog.i("save Image file: ${picture.jpgFile.toPath()}")
+//        ioScope.launch {
             with(image.imageBitmap) {
                 picture.jpgFile.writeJpeg(fitInto(maxStorableImageSizePx))
                 picture.thumbnailJpgFile.writeJpeg(fitInto(storableThumbnailSizePx))
@@ -73,32 +89,56 @@ class AndroidImageStorage(
             }
             pictures.add(0, picture)
             picture.jsonFile.writeText(picture.toJson())
-        }
+//        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun delete(picture: PictureData.Camera) {
-        ioScope.launch {
-            picture.jsonFile.delete()
-            picture.jpgFile.delete()
-            picture.thumbnailJpgFile.delete()
-        }
+        Klog.i("delete Image file: ${picture.jpgFile.toPath()}")
+//        ioScope.launch {
+            if (Files.exists(picture.jsonFile.toPath())) {
+                picture.jsonFile.delete()
+            }
+            if (Files.exists(picture.jpgFile.toPath())) {
+                picture.jpgFile.delete()
+            }
+            if (Files.exists(picture.thumbnailJpgFile.toPath())) {
+                picture.thumbnailJpgFile.delete()
+            }
+//        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun rewrite(picture: PictureData.Camera) {
-        ioScope.launch {
+        Klog.i("rewrite Image file: ${picture.jpgFile.toPath()}")
+//        ioScope.launch {
             picture.jsonFile.delete()
             picture.jsonFile.writeText(picture.toJson())
-        }
+//        }
+//        withContext(ioScope.coroutineContext) {
+//            picture.jsonFile.delete()
+//            picture.jsonFile.writeText(picture.toJson())
+//        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getThumbnail(picture: PictureData.Camera): ImageBitmap =
         withContext(ioScope.coroutineContext) {
-            picture.thumbnailJpgFile.readBytes().toImageBitmap()
+            if (Files.exists(picture.thumbnailJpgFile.toPath())) {
+             return@withContext picture.thumbnailJpgFile.readBytes().toImageBitmap()
+            }
+            throw CustomException("Thumbnail Picture is nil $picture")
         }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getImage(picture: PictureData.Camera): ImageBitmap =
         withContext(ioScope.coroutineContext) {
-            picture.jpgFile.readBytes().toImageBitmap()
+            if (Files.exists(picture.jpgFile.toPath())) {
+                Klog.i("get Image file: ${picture.jpgFile.toPath()}")
+                val bytes = picture.jpgFile.readBytes()
+                return@withContext bytes.toImageBitmap()
+            }
+            throw CustomException("Picture is nil $picture")
         }
 
     // 注解 @OptIn 是用于显式声明某段代码正在使用实验性 API 的注解。

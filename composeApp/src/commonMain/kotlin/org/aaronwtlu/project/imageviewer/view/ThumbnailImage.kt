@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.imageviewer.LocalImageProvider
 import org.aaronwtlu.project.imageviewer.model.PictureData
 
@@ -22,8 +23,10 @@ fun ThumbnailImage(
     val imageProvider = LocalImageProvider.current
     var imageBitmap by remember(picture) { mutableStateOf<ImageBitmap?>(null) }
     LaunchedEffect(picture) {
+//        Klog.i("ThumbnailImage.LaunchedEffect => $picture")
         imageBitmap = imageProvider.getThumbnail(picture)
     }
+//    Klog.i("ThumbnailImage => $picture")
     imageBitmap?.let {
         Image(
             bitmap = filter(it),

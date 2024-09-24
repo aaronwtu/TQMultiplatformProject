@@ -1,4 +1,3 @@
-
 package org.aaronwtlu.project.imageviewer
 
 import androidx.compose.animation.AnimatedContent
@@ -8,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.with
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.imageviewer.model.CameraPage
 import org.aaronwtlu.project.imageviewer.model.FullScreenPage
 import org.aaronwtlu.project.imageviewer.model.GalleryPage
@@ -28,6 +29,9 @@ import org.aaronwtlu.project.imageviewer.view.FullscreenImageScreen
 import org.aaronwtlu.project.imageviewer.view.GalleryScreen
 import org.aaronwtlu.project.imageviewer.view.MemoryScreen
 import org.aaronwtlu.project.imageviewer.view.NavigationStack
+import org.koin.core.logger.Level
+
+const val ImageViewerTag = "ImageViewerTag"
 
 enum class ExternalImageViewerEvent {
     Next,
@@ -56,6 +60,8 @@ fun ImageViewerCommon(
 fun ImageViewerWithProvidedDependencies(
     pictures: SnapshotStateList<PictureData>
 ) {
+
+    Klog.i("Hello common log")
     // rememberSaveable is required to properly handle Android configuration changes (such as device rotation)
     val selectedPictureIndex = rememberSaveable { mutableStateOf(0) }
     val navigationStack = rememberSaveable(
@@ -68,6 +74,7 @@ fun ImageViewerWithProvidedDependencies(
     }
     val externalEvents = LocalInternalEvents.current
     LaunchedEffect(Unit) {
+        Klog.i("Launched effect in ImageViewer")
         externalEvents.collect {
             if (it == ExternalImageViewerEvent.ReturnBack) {
                 navigationStack.back()
@@ -75,19 +82,23 @@ fun ImageViewerWithProvidedDependencies(
         }
     }
 
-    AnimatedContent(targetState = navigationStack.lastWithIndex(), transitionSpec = {
-        val previousIdx = initialState.index
-        val currentIdx = targetState.index
-        val multiplier = if (previousIdx < currentIdx) 1 else -1
-        if (initialState.value is GalleryPage && targetState.value is MemoryPage) {
-            fadeIn() with fadeOut(tween(durationMillis = 500, 500))
-        } else if (initialState.value is MemoryPage && targetState.value is GalleryPage) {
-            fadeIn() with fadeOut(tween(delayMillis = 150))
-        } else {
-            slideInHorizontally { w -> multiplier * w } with
-                    slideOutHorizontally { w -> multiplier * -1 * w }
-        }
-    }) { (_, page) ->
+    AnimatedContent(
+        targetState = navigationStack.lastWithIndex(),
+        transitionSpec = {
+            val previousIdx = initialState.index
+            val currentIdx = targetState.index
+            Klog.i("transition => previousIdx: $previousIdx currentIdx: $currentIdx")
+            val multiplier = if (previousIdx < currentIdx) 1 else -1
+            if (initialState.value is GalleryPage && targetState.value is MemoryPage) {
+                fadeIn() togetherWith fadeOut(tween(durationMillis = 500, 500))
+            } else if (initialState.value is MemoryPage && targetState.value is GalleryPage) {
+                fadeIn() togetherWith fadeOut(tween(delayMillis = 150))
+            } else {
+                slideInHorizontally { w -> multiplier * w } togetherWith
+                        slideOutHorizontally { w -> multiplier * -1 * w }
+            }
+        }) { (_, page) ->
+        Klog.i("did picked page $page")
         when (page) {
             is GalleryPage -> {
                 GalleryScreen(

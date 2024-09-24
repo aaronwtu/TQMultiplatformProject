@@ -42,6 +42,7 @@ import org.aaronwtlu.project.imageviewer.icon.IconVisibility
 import org.aaronwtlu.project.imageviewer.model.PictureData
 import org.aaronwtlu.project.imageviewer.style.ImageviewerColors
 import kotlinx.coroutines.launch
+import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.imageviewer.TopLayout
 import kotlin.math.absoluteValue
 
@@ -204,6 +205,7 @@ private fun SquaresGalleryView(
         verticalArrangement = Arrangement.spacedBy(1.dp),
         horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
+        Klog.i("images : $images")
         itemsIndexed(images) { index, picture ->
             SquareThumbnail(
                 picture = picture,
