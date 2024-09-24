@@ -104,10 +104,11 @@ private fun BoxScope.AuthorizedCamera(
     onCapture: (picture: PictureData.Camera, image: PlatformStorableImage) -> Unit
 ) {
     val camera: AVCaptureDevice? = remember {
+        // TODO: 枚举定义并不在同一个文件中。。。。。，比如front 与 back  
         discoverySessionWithDeviceTypes(
             deviceTypes = deviceTypes,
             mediaType = AVMediaTypeVideo,
-            position = AVCaptureDevicePositionFront,
+            position = AVCaptureDevicePositionBack,
         ).devices.firstOrNull() as? AVCaptureDevice
     }
     if (camera != null) {

@@ -136,6 +136,7 @@ class AndroidImageStorage(
             if (Files.exists(picture.jpgFile.toPath())) {
                 Klog.i("get Image file: ${picture.jpgFile.toPath()}")
                 val bytes = picture.jpgFile.readBytes()
+                // TODO: 携程中的返回需要带上相关关键字的原因，以及改表达式是注解么？ 
                 return@withContext bytes.toImageBitmap()
             }
             throw CustomException("Picture is nil $picture")

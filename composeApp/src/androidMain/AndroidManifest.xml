@@ -21,6 +21,10 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
+
+        <!-- Add value `MAPS_API_KEY=***` to local.properties file (More detailed in README.md) -->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="${MAPS_API_KEY}" />
+
         <activity
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"

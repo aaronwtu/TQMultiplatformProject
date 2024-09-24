@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     kotlin("plugin.serialization")
     id("kotlin-parcelize")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1"
 //    id("com.google.devtools.ksp")
 //    alias(libs.plugins.com.android.application)
 //    alias(libs.plugins.org.jetbrains.kotlin.android)
@@ -54,6 +55,7 @@ kotlin {
             implementation("com.google.accompanist:accompanist-permissions:0.29.2-rc")
             implementation("com.google.android.gms:play-services-maps:18.2.0")
             implementation("com.google.android.gms:play-services-location:21.1.0")
+            implementation("com.google.maps.android:maps-compose:2.11.2")
         }
 
         commonMain.dependencies {

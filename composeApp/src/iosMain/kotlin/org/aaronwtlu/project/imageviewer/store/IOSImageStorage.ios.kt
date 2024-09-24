@@ -72,21 +72,21 @@ class IOSImageStorage (
     override fun saveImage(picture: PictureData.Camera, image: PlatformStorableImage) {
         // suspend 方法
 //        withContext(ioScope.coroutineContext) {}
-        ioScope.launch {
+//        ioScope.launch {
             with(image.rawValue) {
                 picture.jpgFile.writeJpeg(this.fitInto(maxStorableImageSizePx))
                 picture.thumbnailJpgFile.writeJpeg(this.fitInto(storableThumbnailSizePx))
             }
             picture.jsonFile.writeText(picture.toJson())
-        }
+//        }
     }
 
-    override suspend fun delete(picture: PictureData.Camera) {
-        ioScope.launch {
+    override fun delete(picture: PictureData.Camera) {
+//        ioScope.launch {
             picture.jpgFile.delete()
             picture.thumbnailJpgFile.delete()
             picture.jsonFile.delete()
-        }
+//        }
     }
 
     override fun rewrite(picture: PictureData.Camera) {

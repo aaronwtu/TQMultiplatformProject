@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import org.aaronwtlu.project.imageviewer.LocalImageProvider
 import org.aaronwtlu.project.imageviewer.Localization
 import org.aaronwtlu.project.imageviewer.LocalLocalization
+import org.aaronwtlu.project.imageviewer.TopLayout
 //import org.aaronwtlu.project.imageviewer.TopLayout
 import org.aaronwtlu.project.imageviewer.filter.FilterType
 import org.aaronwtlu.project.imageviewer.filter.getFilter
@@ -87,14 +88,14 @@ fun FullscreenImageScreen(
             }
         }
 
-//        TopLayout(
-//            alignLeftContent = {
-//                Tooltip(localization.back) {
-//                    BackButton(back)
-//                }
-//            },
-//            alignRightContent = {},
-//        )
+        TopLayout(
+            alignLeftContent = {
+                Tooltip(localization.back) {
+                    BackButton(back)
+                }
+            },
+            alignRightContent = {},
+        )
     }
 }
 
