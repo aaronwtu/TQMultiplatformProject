@@ -60,8 +60,6 @@ fun ImageViewerCommon(
 fun ImageViewerWithProvidedDependencies(
     pictures: SnapshotStateList<PictureData>
 ) {
-
-    Klog.i("Hello common log")
     // rememberSaveable is required to properly handle Android configuration changes (such as device rotation)
     val selectedPictureIndex = rememberSaveable { mutableStateOf(0) }
     val navigationStack = rememberSaveable(

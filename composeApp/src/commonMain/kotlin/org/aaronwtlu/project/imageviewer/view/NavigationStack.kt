@@ -6,6 +6,7 @@ import org.koin.core.logger.Level
 
 // TODO: vararg 是什么意思？
 class NavigationStack<T>(vararg initial: T) {
+    // TODO: *initial 如何理解
     val stack = mutableStateListOf(*initial)
     fun push(t: T) {
         Klog.i("navi stack push $t")
