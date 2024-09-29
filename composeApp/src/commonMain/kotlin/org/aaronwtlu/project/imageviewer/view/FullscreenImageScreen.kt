@@ -63,7 +63,6 @@ fun FullscreenImageScreen(
                 imageWithFilter,
                 modifier = Modifier.fillMaxSize().clipToBounds(),
             )
-
             Column(
                 Modifier
                     .align(Alignment.BottomCenter)

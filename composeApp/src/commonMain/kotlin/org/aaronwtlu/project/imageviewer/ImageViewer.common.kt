@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import kotlinx.coroutines.flow.filter
 import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.imageviewer.model.CameraPage
 import org.aaronwtlu.project.imageviewer.model.FullScreenPage
@@ -73,11 +74,11 @@ fun ImageViewerWithProvidedDependencies(
     val externalEvents = LocalInternalEvents.current
     LaunchedEffect(Unit) {
         Klog.i("Launched effect in ImageViewer")
-        externalEvents.collect {
-            if (it == ExternalImageViewerEvent.ReturnBack) {
+        externalEvents
+            .filter { it == ExternalImageViewerEvent.ReturnBack }
+            .collect {
                 navigationStack.back()
             }
-        }
     }
 
     AnimatedContent(
