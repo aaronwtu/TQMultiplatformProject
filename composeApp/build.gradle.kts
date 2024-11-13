@@ -26,7 +26,7 @@ kotlin {
     }
     
     jvm("desktop")
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -37,7 +37,7 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
 //        val desktopMain by getting
         
@@ -139,6 +139,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     dependencies {
         debugImplementation(compose.uiTooling)
@@ -148,6 +149,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.benchmark.baseline.profile.gradle.plugin)
     implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.leanback)
 }
 
 compose.desktop {
