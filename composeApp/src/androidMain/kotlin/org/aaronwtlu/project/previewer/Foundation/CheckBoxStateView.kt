@@ -23,12 +23,12 @@ data class CheckBoxState constructor(
 ) : Parcelable
 
 @Composable
-fun CheckBoxStateView() {
+fun CheckBoxStateView(modifier: Modifier) {
     var checkBoxState by rememberSaveable {
         mutableStateOf(CheckBoxState())
     }
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically

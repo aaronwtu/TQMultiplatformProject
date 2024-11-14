@@ -53,20 +53,22 @@ fun HelloInputField(value: String, onValueChanged: (String) -> Unit) {
 data class Person(var name: String, var age: Int) : Parcelable
 
 @Composable
-fun UserInfoField() {
+fun UserInfoField(modifier: Modifier) {
     // TODO: 为什么使用 remember 无效？
     val personState = rememberSaveable {
         mutableStateOf(Person("Aaron", 18))
     }
-    UserInfoInputFieldView(personState)
+    UserInfoInputFieldView(modifier, personState)
 }
 
 @Composable
-fun UserInfoInputFieldView(personState: MutableState<Person>) {
+fun UserInfoInputFieldView(modifier: Modifier, personState: MutableState<Person>) {
     /// 通过 by 将 mutable 中的 Person 取出来
     var person by personState
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         TextField(
             value = person.name,
             onValueChange = {
