@@ -28,33 +28,30 @@ fun WellnessTaskItemA(
     onCheckChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier, verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier.weight(1f).padding(start = 16.dp),
-            text = taskName
-        )
-        Checkbox(checked = checked, onCheckedChange = onCheckChanged)
-        IconButton(onClick = onClosed) {
-            Icon(Icons.Filled.Close, contentDescription = "Close")
-        }
-    }
+
 }
 
 @Composable
 fun FullstateWellnessTaskItem(
     task: WellnessTask,
+    model: WellnessViewModel,
     modifier: Modifier = Modifier,
     onClosed: () -> Unit
 ) {
-    WellnessTaskItemA(
-        taskName = task.label,
-        checked = task.checked,
-        onCheckChanged = { task.checked = it },
-        onClosed = onClosed, // we will implement this later!
-        modifier = modifier,
-    )
+    Row(
+        modifier = modifier, verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f).padding(start = 16.dp),
+            text = task.label
+        )
+        Checkbox(checked = task.checked, onCheckedChange = { task.checked = it })
+        if (model.editAble) {
+            IconButton(onClick = onClosed) {
+                Icon(Icons.Filled.Close, contentDescription = "Close")
+            }
+        }
+    }
 }
 
 @Composable
@@ -69,7 +66,7 @@ fun WellnessTasksList(
     ) {
         Klog.i("WellnessTasksList")
         items(list) { task ->
-            FullstateWellnessTaskItem(task = task, onClosed = {
+            FullstateWellnessTaskItem(task = task, model = model, onClosed = {
                 onCloseTask(task)
                 list = model.tasks
             })

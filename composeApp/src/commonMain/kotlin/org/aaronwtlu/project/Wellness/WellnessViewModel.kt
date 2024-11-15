@@ -46,9 +46,15 @@ class WellnessViewModel(
     val tasks: SnapshotStateList<WellnessTask>
         get() = _tasks
 
+    var editAble by mutableStateOf(false)
+
     fun remove(task: WellnessTask) {
         Klog.i(this@WellnessViewModel.hashCode().toString() + " ${task.id}")
         _tasks.remove(task)
+    }
+
+    fun add(task: WellnessTask) {
+        _tasks.add(0, task)
     }
 }
 

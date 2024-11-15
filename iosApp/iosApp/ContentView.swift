@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 import ComposeApp
 
-struct ComposeView: UIViewControllerRepresentable {
+struct PreviewImageKt: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         MainViewControllerKt.MainViewController()
     }
@@ -10,9 +10,24 @@ struct ComposeView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 
-struct ContentView: View {
+struct WellnessViewKt: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        MainViewControllerKt.WellnessViewController()
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
+
+struct WellnessView: View {
     var body: some View {
-        ComposeView()
+        WellnessViewKt()
+            .ignoresSafeArea(.keyboard)
+    }
+}
+
+struct PreviewImageView: View {
+    var body: some View {
+        PreviewImageKt()
                 .ignoresSafeArea(.keyboard) // Compose has own keyboard handler
     }
 }

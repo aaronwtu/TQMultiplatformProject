@@ -14,10 +14,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.aaronwtlu.project.Klog
 
 import androidx.lifecycle.ViewModel
+import kotlinx.datetime.LocalTime
 
 
 @Composable
@@ -26,11 +29,11 @@ fun WaterCounter(modifier: Modifier = Modifier, viewModel: WellnessViewModel) {
     var showTask by rememberSaveable { mutableStateOf(true) }
     StatelessCounter(
         viewModel,
-        count,
-        { count++ },
-        { count = 0 },
-        showTask,
-        onClosed = { showTask = false },
+        onCreate = {
+            val id = viewModel.tasks.maxOfOrNull { it.id }?.plus(1) ?: 0
+            val task = WellnessTask(id = id,"Task#${LocalTime.toString()}", false)
+            viewModel.add(task)
+        },
         modifier
     )
 }
@@ -39,35 +42,24 @@ fun WaterCounter(modifier: Modifier = Modifier, viewModel: WellnessViewModel) {
 @Composable
 fun StatelessCounter(
     viewModel: WellnessViewModel,
-    count: Int,
-    onChanged: () -> Unit,
-    onReseted: () -> Unit,
-    showTask: Boolean,
-    onClosed: () -> Unit,
+    onCreate: () -> Unit,
     modifier: Modifier
 ) {
     var isChecked by rememberSaveable { mutableStateOf(false) }
     Column(modifier = modifier.padding(16.dp)) {
-        if (count > 0) {
-            if (showTask) {
-                WellnessTaskItemA(
-                    onClosed = onClosed,
-                    taskName = "Have you taken your 15 minute walk today?",
-                    checked = isChecked,
-                    onCheckChanged = { isChecked = it }
-                )
-            }
-            Text("You've had $count glasses.")
-        }
+
         Row(Modifier.padding(top = 8.dp)) {
-            Button(onClick = onChanged, enabled = count < 10) {
+            Button(onClick = onCreate) {
                 Text("Add one")
             }
-            Button(
-                onClick = onReseted,
-                Modifier.padding(start = 8.dp)
-            ) {
-                Text("Clear water count")
+            if (!viewModel.editAble) {
+                Button(onClick = { viewModel.editAble = true }) {
+                    Text("Editing")
+                }
+            } else {
+                Button(onClick = { viewModel.editAble = false }) {
+                    Text("Cancel", style = TextStyle(color = Color.Red))
+                }
             }
         }
         WellnessTasksList(model = viewModel, onCloseTask = { viewModel.remove(it) })
