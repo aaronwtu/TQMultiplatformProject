@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.Lifecycle
 import kotlinx.parcelize.Parcelize
+import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.previewer.Foundation.*
 import org.aaronwtlu.project.previewer.Layout.fadedBackground
 import org.aaronwtlu.project.previewer.Layout.myBackground
@@ -51,6 +52,12 @@ fun lifeCycle() {
 @Preview
 @Composable
 fun FundationPreviewerExample() {
+
+    val box = TestBox()
+    box.size = 1
+    Klog.i("box => $box")
+    testFire(TestDetailInfo())
+
     Column {
         Row(modifier = Modifier.fadedBackground().padding(16.dp)) {
             Text("Hello modifier")
