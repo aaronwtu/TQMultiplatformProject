@@ -61,3 +61,5 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinParcelize = { id = "kotlin-parcelize", version = "2.1.0-RC"}
+secretsGradlePlugin = {id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version = "2.0.1"}

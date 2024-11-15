@@ -55,10 +55,10 @@ fun FundationPreviewerExample() {
         Row(modifier = Modifier.fadedBackground().padding(16.dp)) {
             Text("Hello modifier")
         }
-//        lifeCycle()
-//        CheckBoxStateView(Modifier.myBackground(Color.Red))
-//        UserInfoField(Modifier.myBackground(Color.Black))
-//        HelloContent()
-//        TextPreview()
+        lifeCycle()
+        CheckBoxStateView(Modifier.myBackground(Color.Red))
+        UserInfoField(Modifier.myBackground(Color.Black))
+        HelloContent()
+        TextPreview()
     }
 }

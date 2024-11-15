@@ -3,13 +3,18 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    /// Gradle 插件
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    kotlin("plugin.serialization")
     id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1"
+
+    //
+    kotlin("plugin.serialization")
+
+
 //    id("com.google.devtools.ksp")
 //    alias(libs.plugins.com.android.application)
 //    alias(libs.plugins.org.jetbrains.kotlin.android)
@@ -52,6 +57,7 @@ kotlin {
             implementation("androidx.camera:camera-camera2:1.3.1")
             implementation("androidx.camera:camera-lifecycle:1.3.1")
             implementation("androidx.camera:camera-view:1.3.1")
+            implementation("androidx.lifecycle:lifecycle-viewmodel-compose:{latest_version}")
             implementation("com.google.accompanist:accompanist-permissions:0.29.2-rc")
             implementation("com.google.android.gms:play-services-maps:18.2.0")
             implementation("com.google.android.gms:play-services-location:21.1.0")
@@ -59,6 +65,9 @@ kotlin {
             /// life cycle, 低版本会导致一个crash
             /// java.lang.IllegalStateException: CompositionLocal LocalLifecycleOwner not present
             implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+
+            /// TODO: 这个库为啥用不了？
+            /// implementation("org.jetbrains.kotlinx:kotlinx-parcelize-runtime:2.0.21")
         }
 
         commonMain.dependencies {
@@ -76,8 +85,8 @@ kotlin {
 //            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
             implementation(libs.kotlinx.datetime)
             implementation(libs.core.ktx)
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
             /// Koin
             implementation("io.insert-koin:koin-core:3.5.0")
             /// Log

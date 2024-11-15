@@ -120,7 +120,7 @@ fun MyComponent() {
 
 @Preview
 @Composable
-fun SpreadsheetViewPreviewExample() {
+fun WellnessScreenPreviewExample() {
     MyComponent2()
 //    SpreadsheetViewPreview()
 }
