@@ -19,11 +19,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.Lifecycle
+import kotlinx.coroutines.runBlocking
 import kotlinx.parcelize.Parcelize
 import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.previewer.Foundation.*
 import org.aaronwtlu.project.previewer.Layout.fadedBackground
 import org.aaronwtlu.project.previewer.Layout.myBackground
+import org.aaronwtlu.project.previewer.flow.FlowPreviewer
 
 
 @Composable
@@ -57,9 +59,11 @@ fun FundationPreviewerExample() {
     box.size = 1
     Klog.i("box => $box")
     testFire(TestDetailInfo())
-
+    FlowPreviewer.getInstance().test()
     Column {
-        Row(modifier = Modifier.fadedBackground().padding(16.dp)) {
+        Row(modifier = Modifier
+            .fadedBackground()
+            .padding(16.dp)) {
             Text("Hello modifier")
         }
         lifeCycle()
