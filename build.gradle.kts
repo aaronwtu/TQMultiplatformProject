@@ -5,5 +5,14 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.compose.compiler) apply false
-    alias(libs.plugins.kotlinMultiplatform) apply false
+
+    /// 跨平台插件
+    kotlin("multiplatform").version("2.0.0").apply(false)
+    kotlin("native.cocoapods").version("2.1.0-RC2").apply(false)
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 }

@@ -4,10 +4,16 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     /// Gradle 插件
-    alias(libs.plugins.kotlinMultiplatform)
+//    kotlin("multiplatform")
+//    kotlin("native.cocoapods")
+
+    kotlin("multiplatform")
+    kotlin("native.cocoapods")
+
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+
     id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1"
 
@@ -35,6 +41,43 @@ kotlin {
         }
     }
 
+    cocoapods {
+        summary = "Kotlin sample project with CocoaPods dependencies"
+        homepage = "https://github.com/Kotlin/kotlin-with-cocoapods-sample"
+        version = "1.15.0"
+        ios.deploymentTarget = "15"
+
+        /// Swift 库
+        pod("Alamofire") {
+           source = git("https://github.com/Alamofire/Alamofire.git") {
+               tag = "5.10.0"
+               extraOpts += listOf("-compiler-option", "-fmodules")
+           }
+        }
+
+        /// OC 库
+        pod("AFNetworking") {
+            version = "~> 4.0.0"
+        }
+        pod("SDWebImage") {
+            source = git("https://github.com/SDWebImage/SDWebImage.git") {
+                tag = "5.9.2"
+            }
+        }
+
+        /// Example of usage local Cocoapods dependency
+//        pod("pod_dependency") {
+//            version = "1.0"
+//            source = path(project.file("../pod_dependency"))
+//        }
+
+        /// Example of usage local Pod declared as Subspec
+//        pod("subspec_dependency/Core") {
+//            version = "1.0"
+//            source = path(project.file("../subspec_dependency"))
+//        }
+    }
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -43,6 +86,8 @@ kotlin {
     }
     
     jvm("desktop")
+
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)

@@ -16,6 +16,7 @@ import platform.Foundation.NSLog
 import platform.UIKit.UIDevice
 import platform.Foundation.NSUUID
 import platform.UIKit.UIImage
+import cocoapods.SDWebImage.*
 
 class IOSPlatform: Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
