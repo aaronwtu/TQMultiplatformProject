@@ -23,14 +23,6 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
-    
-    jvm("desktop")
 
     listOf(
         iosX64(),
@@ -43,9 +35,15 @@ kotlin {
         }
     }
 
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+    
+    jvm("desktop")
     sourceSets {
-//        val desktopMain by getting
-        
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -62,10 +60,10 @@ kotlin {
             implementation("com.google.android.gms:play-services-maps:18.2.0")
             implementation("com.google.android.gms:play-services-location:21.1.0")
             implementation("com.google.maps.android:maps-compose:2.11.2")
+            implementation(libs.androidx.tracing.ktx)
             /// life cycle, 低版本会导致一个crash
             /// java.lang.IllegalStateException: CompositionLocal LocalLifecycleOwner not present
             implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-
             /// TODO: 这个库为啥用不了？
             /// implementation("org.jetbrains.kotlinx:kotlinx-parcelize-runtime:2.0.21")
         }
@@ -80,11 +78,9 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(libs.androidx.tracing.ktx)
             /// https://github.com/Kotlin/kotlinx-datetime?tab=readme-ov-file#using-in-your-projects
 //            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
             implementation(libs.kotlinx.datetime)
-            implementation(libs.core.ktx)
 
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
             /// Koin
@@ -96,24 +92,8 @@ kotlin {
 //            implementation("io.ktor:ktor-client-logging:jar:2.3.12")
 
         }
-
         iosMain.dependencies {
-//            implementation("io.ktor:ktor-client-ios:2.0.0")
-//            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt") {
-//                version {
-//                    strictly("1.5.1-native-mt")
-//                }
-//            }
-//            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt") {
-//                version {
-//                    strictly("1.5.1-native-mt")
-//                }
-//            }
         }
-//        desktopMain.dependencies {
-//            implementation(compose.desktop.currentOs)
-//            implementation(libs.kotlinx.coroutines.swing)
-//        }
     }
 }
 
