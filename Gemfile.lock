@@ -126,6 +126,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  bundler (= 2.5.23)
   cocoapods (= 1.16.2)
 
 BUNDLED WITH
