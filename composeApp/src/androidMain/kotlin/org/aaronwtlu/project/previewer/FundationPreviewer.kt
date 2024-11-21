@@ -25,6 +25,7 @@ import org.aaronwtlu.project.Klog
 import org.aaronwtlu.project.previewer.Foundation.*
 import org.aaronwtlu.project.previewer.Layout.fadedBackground
 import org.aaronwtlu.project.previewer.Layout.myBackground
+import org.aaronwtlu.project.previewer.flow.CoroutinePreviewer
 import org.aaronwtlu.project.previewer.flow.FlowPreviewer
 
 
@@ -59,7 +60,8 @@ fun FundationPreviewerExample() {
     box.size = 1
     Klog.i("box => $box")
     testFire(TestDetailInfo())
-    FlowPreviewer.getInstance().test()
+//    FlowPreviewer.getInstance().test()
+    CoroutinePreviewer.getInstance().test()
     Column {
         Row(modifier = Modifier
             .fadedBackground()

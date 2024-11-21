@@ -114,6 +114,11 @@ kotlin {
         }
 
         commonMain.dependencies {
+            // redux
+            implementation(libs.redux.kotlin)
+            implementation(libs.redux.kotlin.thunk)
+            implementation(libs.redux.kotlin.threadsafe)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -135,6 +140,7 @@ kotlin {
 //            implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-logging
 //            implementation("io.ktor:ktor-client-logging:jar:2.3.12")
+
 
         }
         iosMain.dependencies {

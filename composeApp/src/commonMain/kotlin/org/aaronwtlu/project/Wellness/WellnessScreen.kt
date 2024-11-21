@@ -21,6 +21,8 @@ import org.aaronwtlu.project.Klog
 
 import androidx.lifecycle.ViewModel
 import kotlinx.datetime.LocalTime
+import org.aaronwtlu.project.Wellness.redux.AddTask
+import org.aaronwtlu.project.Wellness.redux.RemoteTask
 
 
 @Composable
@@ -32,7 +34,7 @@ fun WaterCounter(modifier: Modifier = Modifier, viewModel: WellnessViewModel) {
         onCreate = {
             val id = viewModel.tasks.maxOfOrNull { it.id }?.plus(1) ?: 0
             val task = WellnessTask(id = id,"Task#${LocalTime.toString()}", false)
-            viewModel.add(task)
+            viewModel.store.dispatch(AddTask(task))
         },
         modifier
     )
@@ -62,7 +64,7 @@ fun StatelessCounter(
                 }
             }
         }
-        WellnessTasksList(model = viewModel, onCloseTask = { viewModel.remove(it) })
+        WellnessTasksList(model = viewModel, onCloseTask = { viewModel.store.dispatch(RemoteTask(it.id)) })
     }
 }
 

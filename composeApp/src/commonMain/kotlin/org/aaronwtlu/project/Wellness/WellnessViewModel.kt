@@ -11,11 +11,18 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import kotlinx.serialization.Serializable
 import org.aaronwtlu.project.Klog
+import org.aaronwtlu.project.Wellness.redux.AddTask
+import org.aaronwtlu.project.Wellness.redux.Init
+import org.aaronwtlu.project.Wellness.redux.RemoteTask
+import org.aaronwtlu.project.Wellness.redux.WellnessState
+import org.aaronwtlu.project.Wellness.redux.rootReducer
+import org.reduxkotlin.StoreSubscription
+import org.reduxkotlin.threadsafe.createThreadSafeStore
 
 //import kotlinx.parcelize.Parcelize
 
 
-class WellnessTask(val id: Int, val label: String, private var initialChecked: Boolean = false) {
+data class WellnessTask(val id: Int, val label: String, private var initialChecked: Boolean = false) {
     var checked by mutableStateOf(initialChecked)
 }
 
@@ -40,22 +47,32 @@ val WellnessTaskSaver = listSaver<WellnessTask, Any>(
     restore = { WellnessTask(it[0] as Int, it[1] as String, it[2] as Boolean) }
 )
 
-class WellnessViewModel(
-    private var _tasks: SnapshotStateList<WellnessTask> = getWellnessTasks().toMutableStateList()
-) : ViewModel() {
-    val tasks: SnapshotStateList<WellnessTask>
-        get() = _tasks
 
+class WellnessViewModel: ViewModel() {
+    /// 可监听
+    var tasks by mutableStateOf(arrayListOf<WellnessTask>())
     var editAble by mutableStateOf(false)
 
-    fun remove(task: WellnessTask) {
-        Klog.i(this@WellnessViewModel.hashCode().toString() + " ${task.id}")
-        _tasks.remove(task)
+    val store = createThreadSafeStore(::rootReducer, WellnessState())
+    private var storeSubscription: StoreSubscription
+
+    init {
+        storeSubscription = store.subscribe {
+            editAble = store.state.editable
+            val elements = store.state.tasks
+            tasks = arrayListOf<WellnessTask>().apply { addAll(elements) }
+        }
+        store.dispatch(Init(getWellnessTasks()))
     }
 
-    fun add(task: WellnessTask) {
-        _tasks.add(0, task)
-    }
+//    fun remove(task: WellnessTask) {
+//        Klog.i(this@WellnessViewModel.hashCode().toString() + " ${task.id}")
+//        _tasks.remove(task)
+//    }
+//
+//    fun add(task: WellnessTask) {
+//        _tasks.add(0, task)
+//    }
 }
 
 val WellnessViewModelSaver = Saver<WellnessViewModel, List<Map<String, String>>>(save = {
@@ -64,9 +81,9 @@ val WellnessViewModelSaver = Saver<WellnessViewModel, List<Map<String, String>>>
     return@Saver save
 }, restore = {
     Klog.i("restore: $it")
-    WellnessViewModel(
-        _tasks = it.map { it.toTask() }.toMutableStateList()
-    )
+    val model = WellnessViewModel()
+    model.store.dispatch(Init(it.map { it.toTask() }))
+    model
 })
 
 fun getWellnessTasks() = List(30) { i -> WellnessTask(i, "Task # $i", false) }

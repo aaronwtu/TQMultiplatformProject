@@ -26,6 +26,7 @@ GEM
     base64 (0.2.0)
     benchmark (0.4.0)
     bigdecimal (3.1.8)
+    bundler-unload (1.0.2)
     claide (1.1.0)
     cocoapods (1.16.2)
       addressable (~> 2.8)
@@ -71,6 +72,7 @@ GEM
     escape (0.0.4)
     ethon (0.16.0)
       ffi (>= 1.15.0)
+    executable-hooks (1.7.1)
     ffi (1.17.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-aarch64-linux-musl)
@@ -99,6 +101,9 @@ GEM
     public_suffix (4.0.7)
     rexml (3.3.9)
     ruby-macho (2.5.1)
+    rubygems-bundler (1.4.5)
+      bundler-unload (>= 1.0.2)
+      executable-hooks (>= 1.5.0)
     securerandom (0.3.2)
     typhoeus (1.4.1)
       ethon (>= 0.9.0)
@@ -128,6 +133,10 @@ PLATFORMS
 DEPENDENCIES
   bundler (= 2.5.23)
   cocoapods (= 1.16.2)
+  rubygems-bundler
+
+RUBY VERSION
+   ruby 3.3.6p108
 
 BUNDLED WITH
    2.5.23
