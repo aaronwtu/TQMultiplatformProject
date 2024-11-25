@@ -16,13 +16,23 @@ import org.aaronwtlu.project.Wellness.redux.Init
 import org.aaronwtlu.project.Wellness.redux.RemoteTask
 import org.aaronwtlu.project.Wellness.redux.WellnessState
 import org.aaronwtlu.project.Wellness.redux.rootReducer
+import org.reduxkotlin.Dispatcher
+import org.reduxkotlin.Store
 import org.reduxkotlin.StoreSubscription
+import org.reduxkotlin.applyMiddleware
+import org.reduxkotlin.middleware
 import org.reduxkotlin.threadsafe.createThreadSafeStore
+import org.reduxkotlin.thunk.Thunk
+import org.reduxkotlin.thunk.ThunkMiddleware
 
 //import kotlinx.parcelize.Parcelize
 
 
-data class WellnessTask(val id: Int, val label: String, private var initialChecked: Boolean = false) {
+data class WellnessTask(
+    val id: Int,
+    val label: String,
+    private var initialChecked: Boolean = false
+) {
     var checked by mutableStateOf(initialChecked)
 }
 
@@ -47,13 +57,78 @@ val WellnessTaskSaver = listSaver<WellnessTask, Any>(
     restore = { WellnessTask(it[0] as Int, it[1] as String, it[2] as Boolean) }
 )
 
+/**
+ * Logs all actions and states after they are dispatched.
+ */
+val loggerMiddleware222 = middleware<WellnessState> { store, next, action ->
+    val result = next(action)
+    Klog.i("DISPATCH action: ${action::class.simpleName}: $action")
+    Klog.i("next state: ${store.state}")
+    result
+}
 
-class WellnessViewModel: ViewModel() {
+/**
+ * Same functionality as above, but declared using a function
+ */
+fun loggerMiddleware(store: Store<WellnessState>) = { next: Dispatcher ->
+    { action: Any ->
+        val result = next(action)
+        Klog.i("DISPATCH action: ${action::class.simpleName}: $action")
+        Klog.i("next state: ${store.state}")
+        result
+    }
+}
+
+/**
+ * Sends crash reports as state is updated and listeners are notified.
+ */
+val crashReporter = middleware<WellnessState> { store, next, action ->
+    try {
+        return@middleware next(action)
+    } catch (e: Exception) {
+        // report to crashlytics, etc
+        throw e
+    }
+}
+
+/**
+ * From redux-kotlin-thunk.  This how thunks are executed.
+ */
+fun createThunkMiddleware(extraArgument: Any? = null): ThunkMiddleware<WellnessState> = { store ->
+    { next: Dispatcher ->
+        { action: Any ->
+            if (action is Function<*>) {
+                try {
+                    (action as Thunk<*>)(store.dispatch, store.getState, extraArgument)
+                } catch (e: Exception) {
+                    throw IllegalArgumentException()
+                }
+            } else {
+                next(action)
+            }
+        }
+    }
+}
+
+fun createWellnessStore(): Store<WellnessState> {
+    return createThreadSafeStore(
+        ::rootReducer,
+        WellnessState(),
+        applyMiddleware(
+            createThunkMiddleware(),
+            ::loggerMiddleware,
+            crashReporter
+        )
+    )
+}
+
+
+class WellnessViewModel : ViewModel() {
     /// 可监听
     var tasks by mutableStateOf(arrayListOf<WellnessTask>())
     var editAble by mutableStateOf(false)
 
-    val store = createThreadSafeStore(::rootReducer, WellnessState())
+    val store = createWellnessStore()
     private var storeSubscription: StoreSubscription
 
     init {
@@ -64,6 +139,7 @@ class WellnessViewModel: ViewModel() {
         }
         store.dispatch(Init(getWellnessTasks()))
     }
+
 
 //    fun remove(task: WellnessTask) {
 //        Klog.i(this@WellnessViewModel.hashCode().toString() + " ${task.id}")

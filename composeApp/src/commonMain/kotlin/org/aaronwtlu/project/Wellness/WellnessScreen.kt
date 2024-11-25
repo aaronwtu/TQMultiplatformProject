@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.datetime.LocalTime
 import org.aaronwtlu.project.Wellness.redux.AddTask
 import org.aaronwtlu.project.Wellness.redux.RemoteTask
+import org.aaronwtlu.project.Wellness.redux.ToggleEdit
 
 
 @Composable
@@ -68,11 +69,11 @@ fun StatelessCounter(
                 Text("Add one")
             }
             if (!viewModel.editAble) {
-                Button(onClick = { viewModel.editAble = true }) {
+                Button(onClick = { viewModel.store.dispatch(ToggleEdit(true))}) {
                     Text("Editing")
                 }
             } else {
-                Button(onClick = { viewModel.editAble = false }) {
+                Button(onClick = { viewModel.store.dispatch(ToggleEdit(false))}) {
                     Text("Cancel", style = TextStyle(color = Color.Red))
                 }
             }

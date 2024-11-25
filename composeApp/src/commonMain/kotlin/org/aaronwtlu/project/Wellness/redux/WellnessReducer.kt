@@ -7,7 +7,7 @@ fun tasksReducer(tasks: List<WellnessTask>, action: Any) =
         is AddTask -> tasks + action.task
         is RemoteTask -> tasks.filter { it.id == action.id }
         is ToggleTask -> tasks.mapIndexed { index, task ->
-            if (index == action.index) {
+            if (task.id == action.task.id) {
                 task.checked = !task.checked
             }
             task

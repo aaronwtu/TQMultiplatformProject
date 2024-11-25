@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.aaronwtlu.project.Klog
+import org.aaronwtlu.project.Wellness.redux.ToggleTask
 
 @Composable
 fun WellnessTaskItemA(
@@ -34,7 +35,7 @@ fun WellnessTaskItemA(
 @Composable
 fun FullstateWellnessTaskItem(
     task: WellnessTask,
-    model: WellnessViewModel,
+    viewModel: WellnessViewModel,
     modifier: Modifier = Modifier,
     onClosed: () -> Unit
 ) {
@@ -45,8 +46,8 @@ fun FullstateWellnessTaskItem(
             modifier = Modifier.weight(1f).padding(start = 16.dp),
             text = task.label
         )
-        Checkbox(checked = task.checked, onCheckedChange = { task.checked = it })
-        if (model.editAble) {
+        Checkbox(checked = task.checked, onCheckedChange = { viewModel.store.dispatch(ToggleTask(task)) })
+        if (viewModel.editAble) {
             IconButton(onClick = onClosed) {
                 Icon(Icons.Filled.Close, contentDescription = "Close")
             }
@@ -66,7 +67,7 @@ fun WellnessTasksList(
     ) {
         Klog.i("WellnessTasksList")
         items(list) { task ->
-            FullstateWellnessTaskItem(task = task, model = model, onClosed = {
+            FullstateWellnessTaskItem(task = task, viewModel = model, onClosed = {
                 onCloseTask(task)
                 list = model.tasks
             })
