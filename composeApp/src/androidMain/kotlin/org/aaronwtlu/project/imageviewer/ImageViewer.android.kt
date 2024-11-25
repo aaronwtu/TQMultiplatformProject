@@ -45,19 +45,6 @@ fun ImageViewerAndroid(externalEvents: Flow<ExternalImageViewerEvent>) {
     ImageViewerTheme {
         ImageViewerCommon(dependencies)
     }
-
-//    Column {
-//        // TODO: 包起来的意义是啥？
-//        ImageViewerTheme {
-//            Text("hello world!!",
-//                color = MaterialTheme.colors.primary,
-//                modifier = Modifier,
-//                fontSize = 30.sp)
-//        }
-//        Text("Hello Kotlin!!!",
-//            color = MaterialTheme.colors.error,
-//            fontSize = 30.sp)
-//    }
 }
 
 

@@ -23,6 +23,7 @@ import org.aaronwtlu.project.imageviewer.ImageStorage
 import org.aaronwtlu.project.imageviewer.model.PictureData
 import org.aaronwtlu.project.imageviewer.toImageBitmap
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.reduxkotlin.threadsafe.createThreadSafeStore
 import tqmultiplatformproject.composeapp.generated.resources.Res
 import java.io.File
 import java.nio.file.Files
@@ -30,6 +31,7 @@ import java.nio.file.Files
 private const val maxStorableImageSizePx = 2000
 private const val storableThumbnailSizePx = 200
 private const val jpegCompressionQuality = 60
+
 
 class CustomException(message: String) : Exception(message)
 

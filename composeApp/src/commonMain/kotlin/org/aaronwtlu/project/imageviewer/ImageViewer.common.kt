@@ -51,7 +51,6 @@ fun ImageViewerCommon(
         LocalInternalEvents provides dependencies.externalEvents,
         LocalSharePicture provides dependencies.sharePicture,
     ) {
-//        Text("hello ${dependencies.pictures}")
         ImageViewerWithProvidedDependencies(dependencies.pictures)
     }
 }

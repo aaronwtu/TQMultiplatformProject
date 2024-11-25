@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import org.aaronwtlu.project.PlatformStorableImage
 import org.aaronwtlu.project.imageviewer.filter.PlatformContext
+import org.aaronwtlu.project.imageviewer.redux.state.ImageViewerState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.reduxkotlin.Store
 import tqmultiplatformproject.composeapp.generated.resources.Res
 
 abstract class Dependencies {
@@ -112,6 +114,7 @@ interface ImageProvider {
 }
 
 interface ImageStorage {
+//    val store: Store<ImageViewerState>
     fun saveImage(picture: PictureData.Camera, image: PlatformStorableImage)
     fun delete(picture: PictureData.Camera)
     fun rewrite(picture: PictureData.Camera)

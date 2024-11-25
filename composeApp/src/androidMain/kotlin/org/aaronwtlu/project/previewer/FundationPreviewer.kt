@@ -61,7 +61,8 @@ fun FundationPreviewerExample() {
     Klog.i("box => $box")
     testFire(TestDetailInfo())
 //    FlowPreviewer.getInstance().test()
-    CoroutinePreviewer.getInstance().test()
+//    CoroutinePreviewer.getInstance().test()
+
     Column {
         Row(modifier = Modifier
             .fadedBackground()
