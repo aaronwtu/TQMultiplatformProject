@@ -135,13 +135,21 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
             /// Koin
             implementation("io.insert-koin:koin-core:3.5.0")
+            implementation("com.soywiz.korlibs.klock:klock:4.0.0")
+            implementation("com.russhwolf:multiplatform-settings:1.2.0")
+
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.json)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.serialization)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.content.negotiation)
+
             /// Log
 //            implementation("io.github.microutils:kotlin-logging:2.0.11")
 //            implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-logging
 //            implementation("io.ktor:ktor-client-logging:jar:2.3.12")
-
-
         }
         iosMain.dependencies {
         }
@@ -190,6 +198,8 @@ dependencies {
     implementation(libs.androidx.benchmark.baseline.profile.gradle.plugin)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.leanback)
+    implementation(libs.litert.metadata)
+    implementation(libs.androidx.material)
 }
 
 compose.desktop {
